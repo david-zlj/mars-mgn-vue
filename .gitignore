@@ -1,3 +1,4 @@
+### gitignore项目忽略文件
 # Logs
 logs
 *.log
@@ -134,3 +135,14 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+### 原项目忽略文件
+node_modules
+.DS_Store
+dist
+dist-ssr
+/dist*
+pnpm-debug
+auto-*.d.ts
+.idea
+.history
