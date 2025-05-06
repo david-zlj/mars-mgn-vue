@@ -21,7 +21,7 @@ export const getDictTypePage = (params: PageParam) => {
 
 // 查询字典详情
 export const getDictType = (id: number) => {
-  return request.get({ url: '/system/dict-type/get?id=' + id })
+  return request.get({ url: `/system/dict-type/${id}/` })
 }
 
 // 新增字典
@@ -36,7 +36,7 @@ export const updateDictType = (data: DictTypeVO) => {
 
 // 删除字典
 export const deleteDictType = (id: number) => {
-  return request.delete({ url: '/system/dict-type/delete?id=' + id })
+  return request.delete({ url: `/system/dict-type/${id}/` })
 }
 // 导出字典类型
 export const exportDictType = (params) => {
