@@ -16,27 +16,27 @@ export const getSimpleDictTypeList = () => {
 
 // 查询字典列表
 export const getDictTypePage = (params: PageParam) => {
-  return request.get({ url: '/system/dict-type/page', params })
+  return request.get({ url: '/system/dict-type', params })
 }
 
 // 查询字典详情
 export const getDictType = (id: number) => {
-  return request.get({ url: `/system/dict-type/${id}/` })
+  return request.get({ url: `/system/dict-type/${id}` })
 }
 
 // 新增字典
 export const createDictType = (data: DictTypeVO) => {
-  return request.post({ url: '/system/dict-type/create', data })
+  return request.post({ url: '/system/dict-type', data })
 }
 
 // 修改字典
 export const updateDictType = (data: DictTypeVO) => {
-  return request.put({ url: '/system/dict-type/update', data })
+  return request.put({ url: `/system/dict-type/${data.id}`, data })
 }
 
 // 删除字典
 export const deleteDictType = (id: number) => {
-  return request.delete({ url: `/system/dict-type/${id}/` })
+  return request.delete({ url: `/system/dict-type/${id}` })
 }
 // 导出字典类型
 export const exportDictType = (params) => {

@@ -26,9 +26,9 @@ defineProps({
 const userStore = useUserStore()
 
 const cropperRef = ref()
-const handelUpload = async ({ data }) => {
-  // TODO @芋艿：去掉这个接口，使用 url 直接上传
-  const res = await uploadAvatar({ avatarFile: data })
+const handelUpload = async ({ data, filename }) => {
+  // 上传文件和文件名信息
+  const res = await uploadAvatar({ avatarFile: new File([data], filename) })
   cropperRef.value.close()
   userStore.setUserAvatarAction(res.data)
 }
