@@ -298,7 +298,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await UserApi.exportUser(queryParams)
-    download.excel(data, '用户数据.xls')
+    download.excel(data, '用户数据.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

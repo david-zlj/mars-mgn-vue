@@ -19,27 +19,34 @@ export interface UserVO {
 
 // 查询用户管理列表
 export const getUserPage = (params: PageParam) => {
-  return request.get({ url: '/system/user/page', params })
+  // 处理时间范围参数
+  const newParams = { ...params }
+  if (newParams.createTime && Array.isArray(newParams.createTime)) {
+    newParams.createTimeBegin = newParams.createTime[0]
+    newParams.createTimeEnd = newParams.createTime[1]
+    delete newParams.createTime
+  }
+  return request.get({ url: '/system/user', params: newParams })
 }
 
 // 查询用户详情
 export const getUser = (id: number) => {
-  return request.get({ url: '/system/user/get?id=' + id })
+  return request.get({ url: `/system/user/${id}` })
 }
 
 // 新增用户
 export const createUser = (data: UserVO) => {
-  return request.post({ url: '/system/user/create', data })
+  return request.post({ url: '/system/user', data })
 }
 
 // 修改用户
 export const updateUser = (data: UserVO) => {
-  return request.put({ url: '/system/user/update', data })
+  return request.put({ url: `/system/user/${data.id}`, data })
 }
 
 // 删除用户
 export const deleteUser = (id: number) => {
-  return request.delete({ url: '/system/user/delete?id=' + id })
+  return request.delete({ url: `/system/user/${id}` })
 }
 
 // 导出用户
@@ -58,7 +65,7 @@ export const resetUserPassword = (id: number, password: string) => {
     id,
     password
   }
-  return request.put({ url: '/system/user/update-password', data: data })
+  return request.put({ url: `/system/user/${id}/update-password`, data: data })
 }
 
 // 用户状态修改
@@ -67,7 +74,7 @@ export const updateUserStatus = (id: number, status: number) => {
     id,
     status
   }
-  return request.put({ url: '/system/user/update-status', data: data })
+  return request.put({ url: `/system/user/${id}/update-status`, data: data })
 }
 
 // 获取用户精简信息列表

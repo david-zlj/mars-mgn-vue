@@ -43,6 +43,9 @@ declare global {
   interface PageParam {
     pageSize?: number
     pageNo?: number
+    createTime?: string[]
+    createTimeBegin?: string
+    createTimeEnd?: string
   }
 
   interface Tree {

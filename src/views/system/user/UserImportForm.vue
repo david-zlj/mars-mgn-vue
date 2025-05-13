@@ -11,18 +11,18 @@
       :on-error="submitFormError"
       :on-exceed="handleExceed"
       :on-success="submitFormSuccess"
-      accept=".xlsx, .xls"
+      accept=".xlsx"
       drag
     >
       <Icon icon="ep:upload" />
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <template #tip>
         <div class="el-upload__tip text-center">
-          <div class="el-upload__tip">
+          <div class="el-upload__tip"  v-if="false">
             <el-checkbox v-model="updateSupport" />
             是否更新已经存在的用户数据
           </div>
-          <span>仅允许导入 xls、xlsx 格式文件。</span>
+          <span>仅允许导入 xlsx 格式文件。</span>
           <el-link
             :underline="false"
             style="font-size: 12px; vertical-align: baseline"
@@ -133,6 +133,6 @@ const handleExceed = (): void => {
 /** 下载模板操作 */
 const importTemplate = async () => {
   const res = await UserApi.importUserTemplate()
-  download.excel(res, '用户导入模版.xls')
+  download.excel(res, '用户导入模版.xlsx')
 }
 </script>
