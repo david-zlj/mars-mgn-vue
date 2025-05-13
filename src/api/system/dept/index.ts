@@ -18,27 +18,26 @@ export const getSimpleDeptList = async (): Promise<DeptVO[]> => {
 }
 
 // 查询部门列表
-export const getDeptPage = async (params: PageParam) => {
-  // return await request.get({ url: '/system/dept/list', params })  // 不接受分页参数
-  return await request.get({ url: '/system/dept/list'})
+export const getDeptPage = async (params: { name?: string; status?: number }) => {
+  return await request.get({ url: '/system/dept', params }) 
 }
 
 // 查询部门详情
 export const getDept = async (id: number) => {
-  return await request.get({ url: `/system/dept/${id}/` })
+  return await request.get({ url: `/system/dept/${id}` })
 }
 
 // 新增部门
 export const createDept = async (data: DeptVO) => {
-  return await request.post({ url: '/system/dept/create', data: data })
+  return await request.post({ url: '/system/dept', data: data })
 }
 
 // 修改部门
 export const updateDept = async (params: DeptVO) => {
-  return await request.put({ url: '/system/dept/update', data: params })
+  return await request.put({ url: `/system/dept/${params.id}`, data: params })
 }
 
 // 删除部门
 export const deleteDept = async (id: number) => {
-  return await request.delete({ url: `/system/dept/${id}/` })
+  return await request.delete({ url: `/system/dept/${id}` })
 }

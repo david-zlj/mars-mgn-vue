@@ -120,8 +120,8 @@ const { t } = useI18n() // 国际化
 const loading = ref(true) // 列表的加载中
 const list = ref() // 列表的数据
 const queryParams = reactive({
-  pageNo: 1,
-  pageSize: 100,
+  // pageNo: 1,
+  // pageSize: 100,
   name: undefined,
   status: undefined
 })
@@ -157,7 +157,7 @@ const handleQuery = () => {
 
 /** 重置按钮操作 */
 const resetQuery = () => {
-  queryParams.pageNo = 1
+  // queryParams.pageNo = 1
   queryFormRef.value.resetFields()
   handleQuery()
 }
