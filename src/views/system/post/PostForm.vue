@@ -7,7 +7,7 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item label="岗位标题" prop="name">
+      <el-form-item label="岗位名称" prop="name">
         <el-input v-model="formData.name" placeholder="请输入岗位标题" />
       </el-form-item>
       <el-form-item label="岗位编码" prop="code">
@@ -59,10 +59,10 @@ const formData = ref({
   remark: ''
 })
 const formRules = reactive({
-  name: [{ required: true, message: '岗位标题不能为空', trigger: 'blur' }],
+  name: [{ required: true, message: '岗位名称不能为空', trigger: 'blur' }],
   code: [{ required: true, message: '岗位编码不能为空', trigger: 'change' }],
   status: [{ required: true, message: '岗位状态不能为空', trigger: 'change' }],
-  remark: [{ required: false, message: '岗位内容不能为空', trigger: 'blur' }]
+  sort: [{ required: true, message: '岗位顺序不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
 

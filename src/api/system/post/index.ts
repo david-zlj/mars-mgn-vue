@@ -12,7 +12,7 @@ export interface PostVO {
 
 // 查询岗位列表
 export const getPostPage = async (params: PageParam) => {
-  return await request.get({ url: '/system/post/page', params })
+  return await request.get({ url: '/system/post', params })
 }
 
 // 获取岗位精简信息列表
@@ -22,22 +22,22 @@ export const getSimplePostList = async (): Promise<PostVO[]> => {
 
 // 查询岗位详情
 export const getPost = async (id: number) => {
-  return await request.get({ url: '/system/post/get?id=' + id })
+  return await request.get({ url: `/system/post/${id}` })
 }
 
 // 新增岗位
 export const createPost = async (data: PostVO) => {
-  return await request.post({ url: '/system/post/create', data })
+  return await request.post({ url: '/system/post', data })
 }
 
 // 修改岗位
 export const updatePost = async (data: PostVO) => {
-  return await request.put({ url: '/system/post/update', data })
+  return await request.put({ url: `/system/post/${data.id}`, data })
 }
 
 // 删除岗位
 export const deletePost = async (id: number) => {
-  return await request.delete({ url: '/system/post/delete?id=' + id })
+  return await request.delete({ url: `/system/post/${id}` })
 }
 
 // 导出岗位
