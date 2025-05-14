@@ -16,7 +16,14 @@ export const getSimpleDictTypeList = () => {
 
 // 查询字典列表
 export const getDictTypePage = (params: PageParam) => {
-  return request.get({ url: '/system/dict-type', params })
+  // 处理时间范围参数
+  const newParams = { ...params }
+  if (newParams.createTime && Array.isArray(newParams.createTime)) {
+    newParams.createTimeBegin = newParams.createTime[0]
+    newParams.createTimeEnd = newParams.createTime[1]
+    delete newParams.createTime
+  }
+  return request.get({ url: '/system/dict-type', params: newParams })
 }
 
 // 查询字典详情
