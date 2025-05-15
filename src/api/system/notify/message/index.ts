@@ -18,12 +18,26 @@ export interface NotifyMessageVO {
 
 // 查询站内信消息列表
 export const getNotifyMessagePage = async (params: PageParam) => {
-  return await request.get({ url: '/system/notify-message/page', params })
+  // 处理时间范围参数
+  const newParams = { ...params }
+  if (newParams.createTime && Array.isArray(newParams.createTime)) {
+    newParams.createTimeBegin = newParams.createTime[0]
+    newParams.createTimeEnd = newParams.createTime[1]
+    delete newParams.createTime
+  }
+  return await request.get({ url: '/system/notify-message', params: newParams })
 }
 
 // 获得我的站内信分页
 export const getMyNotifyMessagePage = async (params: PageParam) => {
-  return await request.get({ url: '/system/notify-message/my-page', params })
+  // 处理时间范围参数
+  const newParams = { ...params }
+  if (newParams.createTime && Array.isArray(newParams.createTime)) {
+    newParams.createTimeBegin = newParams.createTime[0]
+    newParams.createTimeEnd = newParams.createTime[1]
+    delete newParams.createTime
+  }
+  return await request.get({ url: '/system/notify-message/my-page', params: newParams })
 }
 
 // 批量标记已读
