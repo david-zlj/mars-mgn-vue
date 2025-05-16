@@ -20,27 +20,34 @@ export interface NotifySendReqVO {
 
 // 查询站内信模板列表
 export const getNotifyTemplatePage = async (params: PageParam) => {
-  return await request.get({ url: '/system/notify-template/page', params })
+  // 处理时间范围参数
+  const newParams = { ...params }
+  if (newParams.createTime && Array.isArray(newParams.createTime)) {
+    newParams.createTimeBegin = newParams.createTime[0]
+    newParams.createTimeEnd = newParams.createTime[1]
+    delete newParams.createTime
+  }
+  return await request.get({ url: '/system/notify-template', params: newParams })
 }
 
 // 查询站内信模板详情
 export const getNotifyTemplate = async (id: number) => {
-  return await request.get({ url: '/system/notify-template/get?id=' + id })
+  return await request.get({ url: `/system/notify-template/${id}` })
 }
 
 // 新增站内信模板
 export const createNotifyTemplate = async (data: NotifyTemplateVO) => {
-  return await request.post({ url: '/system/notify-template/create', data })
+  return await request.post({ url: '/system/notify-template', data })
 }
 
 // 修改站内信模板
 export const updateNotifyTemplate = async (data: NotifyTemplateVO) => {
-  return await request.put({ url: '/system/notify-template/update', data })
+  return await request.put({ url: `/system/notify-template/${data.id}`, data })
 }
 
 // 删除站内信模板
 export const deleteNotifyTemplate = async (id: number) => {
-  return await request.delete({ url: '/system/notify-template/delete?id=' + id })
+  return await request.delete({ url: `/system/notify-template/${id}` })
 }
 
 // 发送站内信
