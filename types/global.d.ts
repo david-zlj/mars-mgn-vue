@@ -46,6 +46,9 @@ declare global {
     createTime?: string[]
     createTimeBegin?: string
     createTimeEnd?: string
+    sendTime?: string[]
+    sendTimeBegin?: string
+    sendTimeEnd?: string
   }
 
   interface Tree {

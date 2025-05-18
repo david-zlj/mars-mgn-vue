@@ -13,27 +13,27 @@ export interface MailAccountVO {
 
 // 查询邮箱账号列表
 export const getMailAccountPage = async (params: PageParam) => {
-  return await request.get({ url: '/system/mail-account/page', params })
+  return await request.get({ url: '/system/mail-account', params })
 }
 
 // 查询邮箱账号详情
 export const getMailAccount = async (id: number) => {
-  return await request.get({ url: '/system/mail-account/get?id=' + id })
+  return await request.get({ url: `/system/mail-account/${id}` })
 }
 
 // 新增邮箱账号
 export const createMailAccount = async (data: MailAccountVO) => {
-  return await request.post({ url: '/system/mail-account/create', data })
+  return await request.post({ url: '/system/mail-account', data })
 }
 
 // 修改邮箱账号
 export const updateMailAccount = async (data: MailAccountVO) => {
-  return await request.put({ url: '/system/mail-account/update', data })
+  return await request.put({ url: `/system/mail-account/${data.id}`, data })
 }
 
 // 删除邮箱账号
 export const deleteMailAccount = async (id: number) => {
-  return await request.delete({ url: '/system/mail-account/delete?id=' + id })
+  return await request.delete({ url: `/system/mail-account/${id}` })
 }
 
 // 获得邮箱账号精简列表
