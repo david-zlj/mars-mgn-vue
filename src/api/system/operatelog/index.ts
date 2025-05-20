@@ -6,18 +6,21 @@ export type OperateLogVO = {
   userType: number
   userId: number
   username: string
+  nickname: string
   type: string
   subType: string
   bizId: number
   action: string
-  extra: string
+  response: string
   requestMethod: string
   requestUrl: string
   userIp: string
   userAgent: string
+  statusCode: number
   creator: string
   creatorName: string
   createTime: Date
+  executionTime: number
 }
 
 // 查询操作日志列表

@@ -11,7 +11,7 @@
         {{ detailData.userId }}
       </el-descriptions-item>
       <el-descriptions-item label="操作人名字">
-        {{ detailData.username }}
+        {{ detailData.nickname }}
       </el-descriptions-item>
       <el-descriptions-item label="操作人 IP">
         {{ detailData.userIp }}
@@ -19,26 +19,32 @@
       <el-descriptions-item label="操作人 UA">
         {{ detailData.userAgent }}
       </el-descriptions-item>
+      <el-descriptions-item label="请求 URL">
+        {{ detailData.requestMethod }} {{ detailData.requestUrl }}
+      </el-descriptions-item>
       <el-descriptions-item label="操作模块">
         {{ detailData.type }}
       </el-descriptions-item>
       <el-descriptions-item label="操作名">
         {{ detailData.subType }}
       </el-descriptions-item>
-      <el-descriptions-item label="操作内容">
+      <el-descriptions-item label="业务编号">
+        {{ detailData.bizId }}
+      </el-descriptions-item>
+      <!-- <el-descriptions-item label="操作内容">
         {{ detailData.action }}
+      </el-descriptions-item> -->
+      <el-descriptions-item label="HTTP状态码">
+        {{ detailData.statusCode }}
       </el-descriptions-item>
-      <el-descriptions-item v-if="detailData.extra" label="操作拓展参数">
-        {{ detailData.extra }}
-      </el-descriptions-item>
-      <el-descriptions-item label="请求 URL">
-        {{ detailData.requestMethod }} {{ detailData.requestUrl }}
+      <el-descriptions-item v-if="detailData.response" label="响应内容">
+        {{ detailData.response }}
       </el-descriptions-item>
       <el-descriptions-item label="操作时间">
         {{ formatDate(detailData.createTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="业务编号">
-        {{ detailData.bizId }}
+      <el-descriptions-item label="执行时长（毫秒）">
+        {{ detailData.executionTime }}
       </el-descriptions-item>
     </el-descriptions>
   </Dialog>
