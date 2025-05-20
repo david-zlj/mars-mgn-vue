@@ -93,7 +93,7 @@
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column label="日志编号" align="center" prop="id" width="100" />
-      <el-table-column label="操作人" align="center" prop="userName" width="120" />
+      <el-table-column label="操作人" align="center" prop="username" width="120" />
       <el-table-column label="操作模块" align="center" prop="type" width="120" />
       <el-table-column label="操作名" align="center" prop="subType" width="160" />
       <el-table-column label="操作内容" align="center" prop="action" />

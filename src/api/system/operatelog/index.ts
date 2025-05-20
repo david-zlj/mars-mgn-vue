@@ -5,7 +5,7 @@ export type OperateLogVO = {
   traceId: string
   userType: number
   userId: number
-  userName: string
+  username: string
   type: string
   subType: string
   bizId: number
@@ -22,7 +22,14 @@ export type OperateLogVO = {
 
 // 查询操作日志列表
 export const getOperateLogPage = (params: PageParam) => {
-  return request.get({ url: '/system/operate-log/page', params })
+  // 处理时间范围参数
+  const newParams = { ...params }
+  if (newParams.createTime && Array.isArray(newParams.createTime)) {
+    newParams.createTimeBegin = newParams.createTime[0]
+    newParams.createTimeEnd = newParams.createTime[1]
+    delete newParams.createTime
+  }
+  return request.get({ url: '/system/operate-log', params: newParams })
 }
 // 导出操作日志
 export const exportOperateLog = (params: any) => {

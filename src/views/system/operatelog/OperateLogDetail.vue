@@ -11,7 +11,7 @@
         {{ detailData.userId }}
       </el-descriptions-item>
       <el-descriptions-item label="操作人名字">
-        {{ detailData.userName }}
+        {{ detailData.username }}
       </el-descriptions-item>
       <el-descriptions-item label="操作人 IP">
         {{ detailData.userIp }}
