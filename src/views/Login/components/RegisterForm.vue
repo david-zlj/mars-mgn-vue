@@ -142,11 +142,11 @@ const registerRules = {
   ],
   nickname: [
     { required: true, trigger: 'blur', message: '请输入您的昵称' },
-    { min: 0, max: 30, message: '昵称长度必须介于 0 和 30 之间', trigger: 'blur' }
+    { min: 1, max: 30, message: '昵称长度必须介于 1 和 30 之间', trigger: 'blur' }
   ],
   password: [
     { required: true, trigger: 'blur', message: '请输入您的密码' },
-    { min: 5, max: 20, message: '用户密码长度必须介于 5 和 20 之间', trigger: 'blur' },
+    { min: 8, max: 20, message: '用户密码长度必须介于 8 和 20 之间', trigger: 'blur' },
     { pattern: /^[^<>"'|\\]+$/, message: '不能包含非法字符：< > " \' \\\ |', trigger: 'blur' }
   ],
   confirmPassword: [

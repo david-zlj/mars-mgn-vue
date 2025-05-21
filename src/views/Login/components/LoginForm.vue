@@ -183,8 +183,8 @@ const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
 
 const LoginRules = {
   tenantName: [required],
-  username: [required],
-  password: [required]
+  username: [required, { min: 4, max: 30, message: '用户名长度必须在4到30个字符之间', trigger: 'blur' }],
+  password: [required, { min: 8, max: 20, message: '密码长度必须在8到20个字符之间', trigger: 'blur' }]
 }
 const loginData = reactive({
   isShowPassword: false,

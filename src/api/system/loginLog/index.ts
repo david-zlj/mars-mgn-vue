@@ -16,7 +16,14 @@ export interface LoginLogVO {
 
 // 查询登录日志列表
 export const getLoginLogPage = (params: PageParam) => {
-  return request.get({ url: '/system/login-log/page', params })
+  // 处理时间范围参数
+  const newParams = { ...params }
+  if (newParams.createTime && Array.isArray(newParams.createTime)) {
+    newParams.createTimeBegin = newParams.createTime[0]
+    newParams.createTimeEnd = newParams.createTime[1]
+    delete newParams.createTime
+  }
+  return request.get({ url: '/system/login-log', params: newParams })
 }
 
 // 导出登录日志
