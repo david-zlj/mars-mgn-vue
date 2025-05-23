@@ -51,7 +51,7 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="文件名" align="center" prop="name" :show-overflow-tooltip="true" />
+      <el-table-column label="文件名" align="center" prop="name" min-width="200" />
       <el-table-column label="文件路径" align="center" prop="path" :show-overflow-tooltip="true" />
       <el-table-column label="URL" align="center" prop="url" :show-overflow-tooltip="true" />
       <el-table-column

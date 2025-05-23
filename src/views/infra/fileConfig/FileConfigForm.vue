@@ -30,7 +30,7 @@
       <!-- DB -->
       <!-- Local / FTP / SFTP -->
       <el-form-item
-        v-if="formData.storage >= 10 && formData.storage <= 12"
+        v-if="formData.storage >= 11 && formData.storage <= 12"
         label="基础路径"
         prop="config.basePath"
       >
@@ -98,7 +98,7 @@
         <!-- 无需参数校验，所以去掉 prop -->
         <el-input v-model="formData.config.domain" placeholder="请输入自定义域名" />
       </el-form-item>
-      <el-form-item v-else-if="formData.storage" label="自定义域名" prop="config.domain">
+      <el-form-item v-else-if="formData.storage && formData.storage !== 10" label="自定义域名" prop="config.domain">
         <el-input v-model="formData.config.domain" placeholder="请输入自定义域名" />
       </el-form-item>
     </el-form>
