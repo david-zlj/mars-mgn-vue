@@ -36,9 +36,9 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="处理器的名字" prop="handlerName">
+      <el-form-item label="处理器的名字" prop="task">
         <el-input
-          v-model="queryParams.handlerName"
+          v-model="queryParams.task"
           placeholder="请输入处理器的名字"
           clearable
           @keyup.enter="handleQuery"
@@ -82,8 +82,8 @@
           <dict-tag :type="DICT_TYPE.INFRA_JOB_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="处理器的名字" align="center" prop="handlerName" />
-      <el-table-column label="处理器的参数" align="center" prop="handlerParam" />
+      <el-table-column label="处理器的名字" align="center" prop="task" />
+      <el-table-column label="处理器的参数" align="center" prop="kwargs" />
       <el-table-column label="CRON 表达式" align="center" prop="cronExpression" />
       <el-table-column label="操作" align="center" width="200">
         <template #default="scope">
@@ -170,7 +170,7 @@ const queryParams = reactive({
   pageSize: 10,
   name: undefined,
   status: undefined,
-  handlerName: undefined
+  task: undefined
 })
 const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
@@ -207,7 +207,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await JobApi.exportJob(queryParams)
-    download.excel(data, '定时任务.xls')
+    download.excel(data, '定时任务.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

@@ -166,7 +166,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await LoginLogApi.exportLoginLog(queryParams)
-    download.excel(data, '登录日志.xls')
+    download.excel(data, '登录日志.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

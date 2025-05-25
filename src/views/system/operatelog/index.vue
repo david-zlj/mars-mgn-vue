@@ -199,7 +199,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await OperateLogApi.exportOperateLog(queryParams)
-    download.excel(data, '操作日志.xls')
+    download.excel(data, '操作日志.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

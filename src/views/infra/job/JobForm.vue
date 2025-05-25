@@ -10,20 +10,19 @@
       <el-form-item label="任务名称" prop="name">
         <el-input v-model="formData.name" placeholder="请输入任务名称" />
       </el-form-item>
-      <el-form-item label="处理器的名字" prop="handlerName">
+      <el-form-item label="处理器的名字" prop="task">
         <el-input
-          :readonly="formData.id !== undefined"
-          v-model="formData.handlerName"
-          placeholder="请输入处理器的名字"
+          v-model="formData.task"
+          placeholder="示例: myapp_infra.tasks.send_daily_report"
         />
       </el-form-item>
-      <el-form-item label="处理器的参数" prop="handlerParam">
-        <el-input v-model="formData.handlerParam" placeholder="请输入处理器的参数" />
+      <el-form-item label="处理器的参数" prop="kwargs">
+        <el-input v-model="formData.kwargs" placeholder="请字典格式的输入处理器参数。示例：{'a':1,'b':2}" />
       </el-form-item>
       <el-form-item label="CRON 表达式" prop="cronExpression">
-        <crontab v-model="formData.cronExpression" />
+        <el-input v-model="formData.cronExpression" placeholder="请输入 CRON 表达式。示例：* * * * *" />
       </el-form-item>
-      <el-form-item label="重试次数" prop="retryCount">
+      <!-- <el-form-item label="重试次数" prop="retryCount">
         <el-input
           v-model="formData.retryCount"
           placeholder="请输入重试次数。设置为 0 时，不进行重试"
@@ -34,10 +33,10 @@
           v-model="formData.retryInterval"
           placeholder="请输入重试间隔，单位：毫秒。设置为 0 时，无需间隔"
         />
-      </el-form-item>
+      </el-form-item> 
       <el-form-item label="监控超时时间" prop="monitorTimeout">
         <el-input v-model="formData.monitorTimeout" placeholder="请输入监控超时时间，单位：毫秒" />
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <template #footer>
       <el-button type="primary" @click="submitForm" :loading="formLoading">确 定</el-button>
@@ -60,8 +59,8 @@ const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
   id: undefined,
   name: '',
-  handlerName: '',
-  handlerParam: '',
+  task: '',
+  kwargs: '',
   cronExpression: '',
   retryCount: undefined,
   retryInterval: undefined,
@@ -69,7 +68,7 @@ const formData = ref({
 })
 const formRules = reactive({
   name: [{ required: true, message: '任务名称不能为空', trigger: 'blur' }],
-  handlerName: [{ required: true, message: '处理器的名字不能为空', trigger: 'blur' }],
+  task: [{ required: true, message: '处理器的名字不能为空', trigger: 'blur' }],
   cronExpression: [{ required: true, message: 'CRON 表达式不能为空', trigger: 'blur' }],
   retryCount: [{ required: true, message: '重试次数不能为空', trigger: 'blur' }],
   retryInterval: [{ required: true, message: '重试间隔不能为空', trigger: 'blur' }]
@@ -125,8 +124,8 @@ const resetForm = () => {
   formData.value = {
     id: undefined,
     name: '',
-    handlerName: '',
-    handlerParam: '',
+    task: '',
+    kwargs: '',
     cronExpression: '',
     retryCount: undefined,
     retryInterval: undefined,

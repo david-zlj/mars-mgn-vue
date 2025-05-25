@@ -11,23 +11,23 @@
         <dict-tag :type="DICT_TYPE.INFRA_JOB_STATUS" :value="detailData.status" />
       </el-descriptions-item>
       <el-descriptions-item label="处理器的名字">
-        {{ detailData.handlerName }}
+        {{ detailData.task }}
       </el-descriptions-item>
       <el-descriptions-item label="处理器的参数">
-        {{ detailData.handlerParam }}
+        {{ detailData.kwargs }}
       </el-descriptions-item>
       <el-descriptions-item label="Cron 表达式">
         {{ detailData.cronExpression }}
       </el-descriptions-item>
-      <el-descriptions-item label="重试次数">
+      <!-- <el-descriptions-item label="重试次数">
         {{ detailData.retryCount }}
       </el-descriptions-item>
       <el-descriptions-item label="重试间隔">
         {{ detailData.retryInterval + ' 毫秒' }}
-      </el-descriptions-item>
+      </el-descriptions-item> 
       <el-descriptions-item label="监控超时时间">
         {{ detailData.monitorTimeout > 0 ? detailData.monitorTimeout + ' 毫秒' : '未开启' }}
-      </el-descriptions-item>
+      </el-descriptions-item> -->
       <el-descriptions-item label="后续执行时间">
         <el-timeline>
           <el-timeline-item
