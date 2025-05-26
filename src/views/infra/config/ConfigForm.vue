@@ -13,8 +13,8 @@
       <el-form-item label="参数名称" prop="name">
         <el-input v-model="formData.name" placeholder="请输入参数名称" />
       </el-form-item>
-      <el-form-item label="参数键名" prop="key">
-        <el-input v-model="formData.key" placeholder="请输入参数键名" />
+      <el-form-item label="参数键名" prop="configKey">
+        <el-input v-model="formData.configKey" placeholder="请输入参数键名" />
       </el-form-item>
       <el-form-item label="参数键值" prop="value">
         <el-input v-model="formData.value" placeholder="请输入参数键值" />
@@ -57,7 +57,7 @@ const formData = ref({
   id: undefined,
   category: '',
   name: '',
-  key: '',
+  configKey: '',
   value: '',
   visible: true,
   remark: ''
@@ -65,7 +65,7 @@ const formData = ref({
 const formRules = reactive({
   category: [{ required: true, message: '参数分类不能为空', trigger: 'blur' }],
   name: [{ required: true, message: '参数名称不能为空', trigger: 'blur' }],
-  key: [{ required: true, message: '参数键名不能为空', trigger: 'blur' }],
+  configKey: [{ required: true, message: '参数键名不能为空', trigger: 'blur' }],
   value: [{ required: true, message: '参数键值不能为空', trigger: 'blur' }],
   visible: [{ required: true, message: '是否可见不能为空', trigger: 'blur' }]
 })
@@ -121,7 +121,7 @@ const resetForm = () => {
     id: undefined,
     category: '',
     name: '',
-    key: '',
+    configKey: '',
     value: '',
     visible: true,
     remark: ''

@@ -19,9 +19,9 @@
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="参数键名" prop="key">
+      <el-form-item label="参数键名" prop="configKey">
         <el-input
-          v-model="queryParams.key"
+          v-model="queryParams.configKey"
           placeholder="请输入参数键名"
           clearable
           @keyup.enter="handleQuery"
@@ -84,8 +84,8 @@
       <el-table-column label="参数主键" align="center" prop="id" />
       <el-table-column label="参数分类" align="center" prop="category" />
       <el-table-column label="参数名称" align="center" prop="name" :show-overflow-tooltip="true" />
-      <el-table-column label="参数键名" align="center" prop="key" :show-overflow-tooltip="true" />
-      <el-table-column label="参数键值" align="center" prop="value" />
+      <el-table-column label="参数键名" align="center" prop="configKey" :show-overflow-tooltip="true" />
+      <!-- <el-table-column label="参数键值" align="center" prop="value" /> -->
       <el-table-column label="是否可见" align="center" prop="visible">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.visible" />
@@ -156,7 +156,7 @@ const queryParams = reactive({
   pageNo: 1,
   pageSize: 10,
   name: undefined,
-  key: undefined,
+  configKey: undefined,
   type: undefined,
   createTime: []
 })
@@ -214,7 +214,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ConfigApi.exportConfig(queryParams)
-    download.excel(data, '参数配置.xls')
+    download.excel(data, '参数配置.xlsx')
   } catch {
   } finally {
     exportLoading.value = false
