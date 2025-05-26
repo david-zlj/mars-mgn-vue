@@ -12,18 +12,18 @@
       :inline="true"
       label-width="120px"
     >
-      <el-form-item label="处理器的名字" prop="handlerName">
+      <el-form-item label="处理器的名字" prop="taskName">
         <el-input
-          v-model="queryParams.handlerName"
+          v-model="queryParams.taskName"
           placeholder="请输入处理器的名字"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="开始执行时间" prop="beginTime">
+      <el-form-item label="开始执行时间" prop="dateCreated">
         <el-date-picker
-          v-model="queryParams.beginTime"
+          v-model="queryParams.dateCreated"
           type="date"
           value-format="YYYY-MM-DD HH:mm:ss"
           placeholder="选择开始执行时间"
@@ -31,9 +31,9 @@
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="结束执行时间" prop="endTime">
+      <el-form-item label="结束执行时间" prop="dateDone">
         <el-date-picker
-          v-model="queryParams.endTime"
+          v-model="queryParams.dateDone"
           type="date"
           value-format="YYYY-MM-DD HH:mm:ss"
           placeholder="选择结束执行时间"
@@ -78,22 +78,23 @@
     <el-table v-loading="loading" :data="list">
       <el-table-column label="日志编号" align="center" prop="id" />
       <el-table-column label="任务编号" align="center" prop="jobId" />
-      <el-table-column label="处理器的名字" align="center" prop="handlerName" />
-      <el-table-column label="处理器的参数" align="center" prop="handlerParam" />
-      <el-table-column label="第几次执行" align="center" prop="executeIndex" />
+      <el-table-column label="处理器的名字" align="center" prop="taskName" />
+      <el-table-column label="处理器的参数" align="center" prop="taskKwargs" />
+      <!-- <el-table-column label="第几次执行" align="center" prop="executeIndex" /> -->
       <el-table-column label="执行时间" align="center" width="170s">
         <template #default="scope">
-          <span>{{ formatDate(scope.row.beginTime) + ' ~ ' + formatDate(scope.row.endTime) }}</span>
+          <span>{{ formatDate(scope.row.dateCreated) + ' ~ ' + formatDate(scope.row.dateDone) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="执行时长" align="center" prop="duration">
-        <template #default="scope">
-          <span>{{ scope.row.duration + ' 毫秒' }}</span>
-        </template>
-      </el-table-column>
+
       <el-table-column label="任务状态" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_JOB_LOG_STATUS" :value="scope.row.status" />
+        </template>
+      </el-table-column>
+      <el-table-column label="执行结果" align="center" prop="result">
+        <template #default="scope">
+          <span>{{ scope.row.result}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
@@ -140,9 +141,9 @@ const queryParams = reactive({
   pageNo: 1,
   pageSize: 10,
   jobId: query.id,
-  handlerName: undefined,
-  beginTime: undefined,
-  endTime: undefined,
+  taskName: undefined,
+  dateCreated: undefined,
+  dateDone: undefined,
   status: undefined
 })
 const queryFormRef = ref() // 搜索的表单
@@ -186,7 +187,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await JobLogApi.exportJobLog(queryParams)
-    download.excel(data, '定时任务执行日志.xls')
+    download.excel(data, '定时任务执行日志.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

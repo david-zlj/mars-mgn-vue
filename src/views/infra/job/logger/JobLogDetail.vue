@@ -8,20 +8,20 @@
         {{ detailData.jobId }}
       </el-descriptions-item>
       <el-descriptions-item label="处理器的名字">
-        {{ detailData.handlerName }}
+        {{ detailData.taskName }}
       </el-descriptions-item>
       <el-descriptions-item label="处理器的参数">
-        {{ detailData.handlerParam }}
+        {{ detailData.taskKwargs }}
       </el-descriptions-item>
-      <el-descriptions-item label="第几次执行">
+      <!-- <el-descriptions-item label="第几次执行">
         {{ detailData.executeIndex }}
-      </el-descriptions-item>
+      </el-descriptions-item> -->
       <el-descriptions-item label="执行时间">
-        {{ formatDate(detailData.beginTime) + ' ~ ' + formatDate(detailData.endTime) }}
+        {{ formatDate(detailData.dateCreated) + ' ~ ' + formatDate(detailData.dateDone) }}
       </el-descriptions-item>
-      <el-descriptions-item label="执行时长">
+      <!-- <el-descriptions-item label="执行时长">
         {{ detailData.duration + ' 毫秒' }}
-      </el-descriptions-item>
+      </el-descriptions-item> -->
       <el-descriptions-item label="任务状态">
         <dict-tag :type="DICT_TYPE.INFRA_JOB_LOG_STATUS" :value="detailData.status" />
       </el-descriptions-item>
