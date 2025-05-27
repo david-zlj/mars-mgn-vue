@@ -43,10 +43,15 @@
             :prefix-icon="iconLock"
             show-password
             type="password"
-            @keyup.enter="getCode()"
           />
         </el-form-item>
       </el-col>
+      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
+        <el-form-item>
+          <CaptchaComponent v-if="loginData.captchaEnable === 'true'" ref="captchaRef" />
+        </el-form-item>
+      </el-col>
+
       <el-col
         :span="24"
         style="padding-right: 10px; padding-left: 10px; margin-top: -20px; margin-bottom: -20px"
@@ -58,7 +63,7 @@
                 {{ t('login.remember') }}
               </el-checkbox>
             </el-col>
-            <el-col :offset="6" :span="12">
+            <!-- <el-col :offset="6" :span="12">
               <el-link
                 style="float: right"
                 type="primary"
@@ -66,10 +71,11 @@
               >
                 {{ t('login.forgetPassword') }}
               </el-link>
-            </el-col>
+            </el-col> -->
           </el-row>
         </el-form-item>
       </el-col>
+
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
           <XButton
@@ -77,22 +83,15 @@
             :title="t('login.login')"
             class="w-[100%]"
             type="primary"
-            @click="getCode()"
+            @click="handleSubmit()"
           />
         </el-form-item>
       </el-col>
-      <Verify
-        v-if="loginData.captchaEnable === 'true'"
-        ref="verify"
-        :captchaType="captchaType"
-        :imgSize="{ width: '400px', height: '200px' }"
-        mode="pop"
-        @success="handleLogin"
-      />
+
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
           <el-row :gutter="5" justify="space-between" style="width: 100%">
-            <el-col :span="8">
+            <!-- <el-col :span="8">
               <XButton
                 :title="t('login.btnMobile')"
                 class="w-[100%]"
@@ -105,8 +104,8 @@
                 class="w-[100%]"
                 @click="setLoginState(LoginStateEnum.QR_CODE)"
               />
-            </el-col>
-            <el-col :span="8">
+            </el-col> -->
+            <el-col>
               <XButton
                 :title="t('login.btnRegister')"
                 class="w-[100%]"
@@ -116,43 +115,13 @@
           </el-row>
         </el-form-item>
       </el-col>
-      <el-divider content-position="center">{{ t('login.otherLogin') }}</el-divider>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item>
-          <div class="w-[100%] flex justify-between">
-            <Icon
-              v-for="(item, key) in socialList"
-              :key="key"
-              :icon="item.icon"
-              :size="30"
-              class="anticon cursor-pointer"
-              color="#999"
-              @click="doSocialLogin(item.type)"
-            />
-          </div>
-        </el-form-item>
-      </el-col>
-      <el-divider content-position="center">萌新必读</el-divider>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item>
-          <div class="w-[100%] flex justify-between">
-            <el-link href="https://doc.iocoder.cn/" target="_blank">📚开发指南</el-link>
-            <el-link href="https://doc.iocoder.cn/video/" target="_blank">🔥视频教程</el-link>
-            <el-link href="https://www.iocoder.cn/Interview/good-collection/" target="_blank">
-              ⚡面试手册
-            </el-link>
-            <el-link href="http://static.yudao.iocoder.cn/mp/Aix9975.jpeg" target="_blank">
-              🤝外包咨询
-            </el-link>
-          </div>
-        </el-form-item>
-      </el-col>
     </el-row>
   </el-form>
 </template>
 <script lang="ts" setup>
 import { ElLoading } from 'element-plus'
 import LoginFormTitle from './LoginFormTitle.vue'
+import CaptchaComponent from './CaptchaComponent.vue'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
 import { useIcon } from '@/hooks/web/useIcon'
@@ -165,7 +134,7 @@ import { LoginStateEnum, useFormValid, useLoginState } from './useLogin'
 defineOptions({ name: 'LoginForm' })
 
 const { t } = useI18n()
-const message = useMessage()
+// const message = useMessage()
 const iconHouse = useIcon({ icon: 'ep:house' })
 const iconAvatar = useIcon({ icon: 'ep:avatar' })
 const iconLock = useIcon({ icon: 'ep:lock' })
@@ -176,15 +145,20 @@ const { currentRoute, push } = useRouter()
 const permissionStore = usePermissionStore()
 const redirect = ref<string>('')
 const loginLoading = ref(false)
-const verify = ref()
-const captchaType = ref('blockPuzzle') // blockPuzzle 滑块 clickWord 点击文字
+const captchaRef = ref()
 
 const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
 
 const LoginRules = {
   tenantName: [required],
-  username: [required, { min: 4, max: 30, message: '用户名长度必须在4到30个字符之间', trigger: 'blur' }],
-  password: [required, { min: 8, max: 20, message: '密码长度必须在8到20个字符之间', trigger: 'blur' }]
+  username: [
+    required,
+    { min: 4, max: 30, message: '用户名长度必须在4到30个字符之间', trigger: 'blur' }
+  ],
+  password: [
+    required,
+    { min: 8, max: 20, message: '密码长度必须在8到20个字符之间', trigger: 'blur' }
+  ]
 }
 const loginData = reactive({
   isShowPassword: false,
@@ -199,31 +173,34 @@ const loginData = reactive({
   }
 })
 
-const socialList = [
-  { icon: 'ant-design:wechat-filled', type: 30 },
-  { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
-  { icon: 'ant-design:github-filled', type: 0 },
-  { icon: 'ant-design:alipay-circle-filled', type: 0 }
-]
+// const socialList = [
+//   { icon: 'ant-design:wechat-filled', type: 30 },
+//   { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
+//   { icon: 'ant-design:github-filled', type: 0 },
+//   { icon: 'ant-design:alipay-circle-filled', type: 0 }
+// ]
 
-// 获取验证码
-const getCode = async () => {
-  // 情况一，未开启：则直接登录
+// 处理登录提交
+const handleSubmit = async () => {
+  // 情况一，未开启验证码：则直接登录
   if (loginData.captchaEnable === 'false') {
     await handleLogin({})
-  } else {
-    // 情况二，已开启：则展示验证码；只有完成验证码的情况，才进行登录
-    // 弹出验证码
-    verify.value.show()
+    return
+  }
+
+  // 情况二，已开启验证码：则进行验证码验证
+  const isValid = await captchaRef.value?.validateCaptcha()
+  if (isValid) {
+    await handleLogin({})
   }
 }
 // 获取租户 ID
-const getTenantId = async () => {
-  if (loginData.tenantEnable === 'true') {
-    const res = await LoginApi.getTenantIdByName(loginData.loginForm.tenantName)
-    authUtil.setTenantId(res)
-  }
-}
+// const getTenantId = async () => {
+//   if (loginData.tenantEnable === 'true') {
+//     const res = await LoginApi.getTenantIdByName(loginData.loginForm.tenantName)
+//     authUtil.setTenantId(res)
+//   }
+// }
 // 记住我
 const getLoginFormCache = () => {
   const loginForm = authUtil.getLoginForm()
@@ -238,20 +215,20 @@ const getLoginFormCache = () => {
   }
 }
 // 根据域名，获得租户信息
-const getTenantByWebsite = async () => {
-  const website = location.host
-  const res = await LoginApi.getTenantByWebsite(website)
-  if (res) {
-    loginData.loginForm.tenantName = res.name
-    authUtil.setTenantId(res.id)
-  }
-}
+// const getTenantByWebsite = async () => {
+//   const website = location.host
+//   const res = await LoginApi.getTenantByWebsite(website)
+//   if (res) {
+//     loginData.loginForm.tenantName = res.name
+//     authUtil.setTenantId(res.id)
+//   }
+// }
 const loading = ref() // ElLoading.service 返回的实例
 // 登录
 const handleLogin = async (params: any) => {
   loginLoading.value = true
   try {
-    await getTenantId()
+    // await getTenantId()
     const data = await validForm()
     if (!data) {
       return
@@ -289,40 +266,40 @@ const handleLogin = async (params: any) => {
 }
 
 // 社交登录
-const doSocialLogin = async (type: number) => {
-  if (type === 0) {
-    message.error('此方式未配置')
-  } else {
-    loginLoading.value = true
-    if (loginData.tenantEnable === 'true') {
-      // 尝试先通过 tenantName 获取租户
-      await getTenantId()
-      // 如果获取不到，则需要弹出提示，进行处理
-      if (!authUtil.getTenantId()) {
-        try {
-          const data = await message.prompt('请输入租户名称', t('common.reminder'))
-          if (data?.action !== 'confirm') throw 'cancel'
-          const res = await LoginApi.getTenantIdByName(data.value)
-          authUtil.setTenantId(res)
-        } catch (error) {
-          if (error === 'cancel') return
-        } finally {
-          loginLoading.value = false
-        }
-      }
-    }
-    // 计算 redirectUri
-    // 注意: type、redirect 需要先 encode 一次，否则钉钉回调会丢失。
-    // 配合 social-login.vue#getUrlValue() 使用
-    const redirectUri =
-      location.origin +
-      '/social-login?' +
-      encodeURIComponent(`type=${type}&redirect=${redirect.value || '/'}`)
+// const doSocialLogin = async (type: number) => {
+//   if (type === 0) {
+//     message.error('此方式未配置')
+//   } else {
+//     loginLoading.value = true
+//     if (loginData.tenantEnable === 'true') {
+//       // 尝试先通过 tenantName 获取租户
+//       await getTenantId()
+//       // 如果获取不到，则需要弹出提示，进行处理
+//       if (!authUtil.getTenantId()) {
+//         try {
+//           const data = await message.prompt('请输入租户名称', t('common.reminder'))
+//           if (data?.action !== 'confirm') throw 'cancel'
+//           const res = await LoginApi.getTenantIdByName(data.value)
+//           authUtil.setTenantId(res)
+//         } catch (error) {
+//           if (error === 'cancel') return
+//         } finally {
+//           loginLoading.value = false
+//         }
+//       }
+//     }
+//     // 计算 redirectUri
+//     // 注意: type、redirect 需要先 encode 一次，否则钉钉回调会丢失。
+//     // 配合 social-login.vue#getUrlValue() 使用
+//     const redirectUri =
+//       location.origin +
+//       '/social-login?' +
+//       encodeURIComponent(`type=${type}&redirect=${redirect.value || '/'}`)
 
-    // 进行跳转
-    window.location.href = await LoginApi.socialAuthRedirect(type, encodeURIComponent(redirectUri))
-  }
-}
+//     // 进行跳转
+//     window.location.href = await LoginApi.socialAuthRedirect(type, encodeURIComponent(redirectUri))
+//   }
+// }
 watch(
   () => currentRoute.value,
   (route: RouteLocationNormalizedLoaded) => {
@@ -334,7 +311,7 @@ watch(
 )
 onMounted(() => {
   getLoginFormCache()
-  getTenantByWebsite()
+  // getTenantByWebsite()
 })
 </script>
 
