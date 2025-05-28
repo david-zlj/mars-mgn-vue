@@ -1,6 +1,6 @@
 <template>
   <el-form
-    v-show="getShow"
+    v-if="getShow"
     ref="formLogin"
     :model="loginData.loginForm"
     :rules="LoginRules"
@@ -13,17 +13,6 @@
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
           <LoginFormTitle style="width: 100%" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item v-if="loginData.tenantEnable === 'true'" prop="tenantName">
-          <el-input
-            v-model="loginData.loginForm.tenantName"
-            :placeholder="t('login.tenantNamePlaceholder')"
-            :prefix-icon="iconHouse"
-            link
-            type="primary"
-          />
         </el-form-item>
       </el-col>
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
@@ -51,7 +40,6 @@
           <CaptchaComponent v-if="loginData.captchaEnable === 'true'" ref="captchaRef" />
         </el-form-item>
       </el-col>
-
       <el-col
         :span="24"
         style="padding-right: 10px; padding-left: 10px; margin-top: -20px; margin-bottom: -20px"
@@ -75,7 +63,6 @@
           </el-row>
         </el-form-item>
       </el-col>
-
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
           <XButton
@@ -123,9 +110,7 @@ import { ElLoading } from 'element-plus'
 import LoginFormTitle from './LoginFormTitle.vue'
 import CaptchaComponent from './CaptchaComponent.vue'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
-
 import { useIcon } from '@/hooks/web/useIcon'
-
 import * as authUtil from '@/utils/auth'
 import { usePermissionStore } from '@/store/modules/permission'
 import * as LoginApi from '@/api/login'
@@ -135,7 +120,7 @@ defineOptions({ name: 'LoginForm' })
 
 const { t } = useI18n()
 // const message = useMessage()
-const iconHouse = useIcon({ icon: 'ep:house' })
+// const iconHouse = useIcon({ icon: 'ep:house' })
 const iconAvatar = useIcon({ icon: 'ep:avatar' })
 const iconLock = useIcon({ icon: 'ep:lock' })
 const formLogin = ref()
@@ -146,11 +131,9 @@ const permissionStore = usePermissionStore()
 const redirect = ref<string>('')
 const loginLoading = ref(false)
 const captchaRef = ref()
-
 const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
 
 const LoginRules = {
-  tenantName: [required],
   username: [
     required,
     { min: 4, max: 30, message: '用户名长度必须在4到30个字符之间', trigger: 'blur' }
@@ -160,12 +143,13 @@ const LoginRules = {
     { min: 8, max: 20, message: '密码长度必须在8到20个字符之间', trigger: 'blur' }
   ]
 }
+
 const loginData = reactive({
   isShowPassword: false,
   captchaEnable: import.meta.env.VITE_APP_CAPTCHA_ENABLE,
-  tenantEnable: import.meta.env.VITE_APP_TENANT_ENABLE,
+  // tenantEnable: import.meta.env.VITE_APP_TENANT_ENABLE,
   loginForm: {
-    tenantName: import.meta.env.VITE_APP_DEFAULT_LOGIN_TENANT || '',
+    // tenantName: import.meta.env.VITE_APP_DEFAULT_LOGIN_TENANT || '',
     username: import.meta.env.VITE_APP_DEFAULT_LOGIN_USERNAME || '',
     password: import.meta.env.VITE_APP_DEFAULT_LOGIN_PASSWORD || '',
     captchaVerification: '',
@@ -209,8 +193,8 @@ const getLoginFormCache = () => {
       ...loginData.loginForm,
       username: loginForm.username ? loginForm.username : loginData.loginForm.username,
       password: loginForm.password ? loginForm.password : loginData.loginForm.password,
-      rememberMe: loginForm.rememberMe,
-      tenantName: loginForm.tenantName ? loginForm.tenantName : loginData.loginForm.tenantName
+      rememberMe: loginForm.rememberMe
+      // tenantName: loginForm.tenantName ? loginForm.tenantName : loginData.loginForm.tenantName
     }
   }
 }

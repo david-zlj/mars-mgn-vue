@@ -38,7 +38,7 @@ export const formatToken = (token: string): string => {
 // ========== 账号相关 ==========
 
 export type LoginFormType = {
-  tenantName: string
+  // tenantName: string
   username: string
   password: string
   rememberMe: boolean

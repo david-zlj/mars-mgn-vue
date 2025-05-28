@@ -50,8 +50,10 @@ const validateCaptcha = async () => {
   }
 }
 
-// 组件挂载时加载
-onMounted(() => fetchCaptcha())
+// 组件挂载时加载验证码
+onMounted(() => {
+  fetchCaptcha()
+})
 
 // 暴露接口给父组件
 defineExpose({ validateCaptcha })

@@ -1,6 +1,6 @@
 <template>
   <el-form
-    v-show="getShow"
+    v-if="getShow"
     ref="formLogin"
     :model="registerData.registerForm"
     :rules="registerRules"
@@ -15,7 +15,7 @@
           <LoginFormTitle style="width: 100%" />
         </el-form-item>
       </el-col>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
+      <!-- <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item v-if="registerData.tenantEnable === 'true'" prop="tenantName">
           <el-input
             v-model="registerData.registerForm.tenantName"
@@ -26,7 +26,7 @@
             size="large"
           />
         </el-form-item>
-      </el-col>
+      </el-col> -->
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item prop="username">
           <el-input
@@ -38,7 +38,7 @@
         </el-form-item>
       </el-col>
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item prop="username">
+        <el-form-item prop="nickname">
           <el-input
             v-model="registerData.registerForm.nickname"
             placeholder="昵称"
@@ -75,23 +75,20 @@
       </el-col>
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
+          <CaptchaComponent v-if="registerData.captchaEnable === 'true'" ref="captchaRef" />
+        </el-form-item>
+      </el-col>
+      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
+        <el-form-item>
           <XButton
             :loading="loginLoading"
             :title="t('login.register')"
             class="w-[100%]"
             type="primary"
-            @click="getCode()"
+            @click="handleSubmit()"
           />
         </el-form-item>
       </el-col>
-      <Verify
-        v-if="registerData.captchaEnable === 'true'"
-        ref="verify"
-        :captchaType="captchaType"
-        :imgSize="{ width: '400px', height: '200px' }"
-        mode="pop"
-        @success="handleRegister"
-      />
     </el-row>
     <XButton :title="t('login.hasUser')" class="w-[100%]" @click="handleBackLogin()" />
   </el-form>
@@ -105,11 +102,12 @@ import * as authUtil from '@/utils/auth'
 import { usePermissionStore } from '@/store/modules/permission'
 import * as LoginApi from '@/api/login'
 import { LoginStateEnum, useLoginState } from './useLogin'
+import CaptchaComponent from './CaptchaComponent.vue'
 
 defineOptions({ name: 'RegisterForm' })
 
 const { t } = useI18n()
-const iconHouse = useIcon({ icon: 'ep:house' })
+// const iconHouse = useIcon({ icon: 'ep:house' })
 const iconAvatar = useIcon({ icon: 'ep:avatar' })
 const iconLock = useIcon({ icon: 'ep:lock' })
 const formLogin = ref()
@@ -118,8 +116,8 @@ const { currentRoute, push } = useRouter()
 const permissionStore = usePermissionStore()
 const redirect = ref<string>('')
 const loginLoading = ref(false)
-const verify = ref()
-const captchaType = ref('blockPuzzle') // blockPuzzle 滑块 clickWord 点击文字
+const captchaRef = ref()
+// const captchaType = ref('blockPuzzle') // blockPuzzle 滑块 clickWord 点击文字
 
 const getShow = computed(() => unref(getLoginState) === LoginStateEnum.REGISTER)
 
@@ -132,10 +130,10 @@ const equalToPassword = (rule, value, callback) => {
 }
 
 const registerRules = {
-  tenantName: [
-    { required: true, trigger: 'blur', message: '请输入您所属的租户' },
-    { min: 2, max: 20, message: '租户账号长度必须介于 2 和 20 之间', trigger: 'blur' }
-  ],
+  // tenantName: [
+  //   { required: true, trigger: 'blur', message: '请输入您所属的租户' },
+  //   { min: 2, max: 20, message: '租户账号长度必须介于 2 和 20 之间', trigger: 'blur' }
+  // ],
   username: [
     { required: true, trigger: 'blur', message: '请输入您的账号' },
     { min: 4, max: 30, message: '用户账号长度必须介于 4 和 30 之间', trigger: 'blur' }
@@ -158,7 +156,7 @@ const registerRules = {
 const registerData = reactive({
   isShowPassword: false,
   captchaEnable: import.meta.env.VITE_APP_CAPTCHA_ENABLE,
-  tenantEnable: import.meta.env.VITE_APP_TENANT_ENABLE,
+  // tenantEnable: import.meta.env.VITE_APP_TENANT_ENABLE,
   registerForm: {
     tenantName: import.meta.env.VITE_APP_DEFAULT_LOGIN_TENANT || '',
     nickname: '',
@@ -174,15 +172,13 @@ const registerData = reactive({
 const handleRegister = async (params: any) => {
   loading.value = true
   try {
-    if (registerData.tenantEnable) {
-      await getTenantId()
-      registerData.registerForm.tenantId = authUtil.getTenantId()
-    }
-
+    // if (registerData.tenantEnable) {
+    //   await getTenantId()
+    //   registerData.registerForm.tenantId = authUtil.getTenantId()
+    // }
     if (registerData.captchaEnable) {
       registerData.registerForm.captchaVerification = params.captchaVerification
     }
-
     const res = await LoginApi.register(registerData.registerForm)
     if (!res) {
       return
@@ -211,35 +207,43 @@ const handleRegister = async (params: any) => {
   }
 }
 
-// 获取验证码
-const getCode = async () => {
-  // 情况一，未开启：则直接注册
-  if (registerData.captchaEnable === 'false') {
-    await handleRegister({})
-  } else {
-    // 情况二，已开启：则展示验证码；只有完成验证码的情况，才进行注册
-    // 弹出验证码
-    verify.value.show()
-  }
+// 处理注册提交
+const handleSubmit = async () => {
+  // 表单验证
+  await formLogin.value.validate(async (valid: boolean) => {
+    if (!valid) return
+
+    // 情况一，未开启验证码：则直接注册
+    if (registerData.captchaEnable === 'false') {
+      await handleRegister({})
+      return
+    }
+
+    // 情况二，已开启验证码：则进行验证码验证
+    const isValid = await captchaRef.value?.validateCaptcha()
+    if (isValid) {
+      await handleRegister({})
+    }
+  })
 }
 
 // 获取租户 ID
-const getTenantId = async () => {
-  if (registerData.tenantEnable === 'true') {
-    const res = await LoginApi.getTenantIdByName(registerData.registerForm.tenantName)
-    authUtil.setTenantId(res)
-  }
-}
+// const getTenantId = async () => {
+//   if (registerData.tenantEnable === 'true') {
+//     const res = await LoginApi.getTenantIdByName(registerData.registerForm.tenantName)
+//     authUtil.setTenantId(res)
+//   }
+// }
 
 // 根据域名，获得租户信息
-const getTenantByWebsite = async () => {
-  const website = location.host
-  const res = await LoginApi.getTenantByWebsite(website)
-  if (res) {
-    registerData.registerForm.tenantName = res.name
-    authUtil.setTenantId(res.id)
-  }
-}
+// const getTenantByWebsite = async () => {
+//   const website = location.host
+//   const res = await LoginApi.getTenantByWebsite(website)
+//   if (res) {
+//     registerData.registerForm.tenantName = res.name
+//     authUtil.setTenantId(res.id)
+//   }
+// }
 const loading = ref() // ElLoading.service 返回的实例
 
 watch(
@@ -253,7 +257,7 @@ watch(
 )
 onMounted(() => {
   // getCookie()
-  getTenantByWebsite()
+  // getTenantByWebsite()
 })
 </script>
 
