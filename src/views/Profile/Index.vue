@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO @芋艿：可优化，对标 vben 版本 -->
   <div class="flex">
     <el-card class="user w-1/3" shadow="hover">
       <template #header>
@@ -18,16 +17,14 @@
           <el-tab-pane :label="t('profile.info.resetPwd')" name="resetPwd">
             <ResetPwd />
           </el-tab-pane>
-          <el-tab-pane :label="t('profile.info.userSocial')" name="userSocial">
-            <UserSocial v-model:activeName="activeName" />
-          </el-tab-pane>
         </el-tabs>
       </div>
     </el-card>
   </div>
 </template>
 <script lang="ts" setup>
-import { BasicInfo, ProfileUser, ResetPwd, UserSocial } from './components'
+import { BasicInfo, ProfileUser, ResetPwd } from './components'
+// import { BasicInfo, ProfileUser, ResetPwd, UserSocial } from './components'
 
 const { t } = useI18n()
 defineOptions({ name: 'Profile' })

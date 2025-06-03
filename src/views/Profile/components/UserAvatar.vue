@@ -16,7 +16,6 @@ import { uploadAvatar } from '@/api/system/user/profile'
 import { CropperAvatar } from '@/components/Cropper'
 import { useUserStore } from '@/store/modules/user'
 
-// TODO @芋艿：合并到 ProfileUser 组件中，更简洁一点
 defineOptions({ name: 'UserAvatar' })
 
 defineProps({
