@@ -6,6 +6,7 @@ import WebStorageCache from 'web-storage-cache'
 
 type CacheType = 'localStorage' | 'sessionStorage'
 
+// 缓存键
 export const CACHE_KEY = {
   // 用户相关
   ROLE_ROUTERS: 'roleRouters',
@@ -21,6 +22,7 @@ export const CACHE_KEY = {
   TenantId: 'tenantId'
 }
 
+// 默认为 localStorage，可以通过 type 参数进行切换
 export const useCache = (type: CacheType = 'localStorage') => {
   const wsCache: WebStorageCache = new WebStorageCache({
     storage: type
