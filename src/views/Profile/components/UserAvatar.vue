@@ -1,6 +1,8 @@
 <template>
   <div class="change-avatar">
+    <!-- 在 CropperAvatar 添加 v-if 确保数据就绪 -->
     <CropperAvatar
+      v-if="img"
       ref="cropperRef"
       :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
       :showBtn="false"
@@ -26,10 +28,14 @@ const userStore = useUserStore()
 
 const cropperRef = ref()
 const handelUpload = async ({ data, filename }) => {
-  // 上传文件和文件名信息
-  const res = await uploadAvatar({ avatarFile: new File([data], filename) })
-  cropperRef.value.close()
-  userStore.setUserAvatarAction(res.data)
+  try {
+    // 上传文件和文件名信息
+    const res = await uploadAvatar({ avatarFile: new File([data], filename) })
+    cropperRef.value.close()
+    userStore.setUserAvatarAction(res.data)
+  } catch (error) {
+    // console.error('上传失败：', error)
+  }
 }
 </script>
 
