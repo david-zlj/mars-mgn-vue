@@ -1,175 +1,140 @@
 <template>
-  <div>
-    <el-card shadow="never">
-      <el-skeleton :loading="loading" animated>
-        <el-row :gutter="16" justify="space-between">
-          <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
-            <div class="flex items-center">
-              <el-avatar :src="avatar" :size="70" class="mr-16px">
-                <img src="@/assets/imgs/avatar.gif" alt="" />
-              </el-avatar>
+  <el-row :class="prefixCls" :gutter="20" justify="space-between">
+    <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
+      <el-card class="mb-20px" shadow="hover">
+        <el-skeleton :loading="loading" :rows="2" animated>
+          <template #default>
+            <div :class="`${prefixCls}__item flex justify-between`">
               <div>
-                <div class="text-20px">
-                  {{ t('workplace.welcome') }} {{ username }} {{ t('workplace.happyDay') }}
+                <div
+                  :class="`${prefixCls}__item--icon ${prefixCls}__item--peoples p-16px inline-block rounded-6px`"
+                >
+                  <Icon :size="40" icon="svg-icon:peoples" />
                 </div>
-                <div class="mt-10px text-14px text-gray-500">
-                  {{ t('workplace.toady') }}，20℃ - 32℃！
+              </div>
+              <div class="flex flex-col justify-between">
+                <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
+                  >{{ t('analysis.newUser') }}
                 </div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
-            <div class="h-70px flex items-center justify-end lt-sm:mt-10px">
-              <div class="px-8px text-right">
-                <div class="mb-16px text-14px text-gray-400">{{ t('workplace.project') }}</div>
                 <CountTo
-                  class="text-20px"
-                  :start-val="0"
-                  :end-val="totalSate.project"
                   :duration="2600"
-                />
-              </div>
-              <el-divider direction="vertical" />
-              <div class="px-8px text-right">
-                <div class="mb-16px text-14px text-gray-400">{{ t('workplace.toDo') }}</div>
-                <CountTo
-                  class="text-20px"
+                  :end-val="102400"
                   :start-val="0"
-                  :end-val="totalSate.todo"
-                  :duration="2600"
-                />
-              </div>
-              <el-divider direction="vertical" border-style="dashed" />
-              <div class="px-8px text-right">
-                <div class="mb-16px text-14px text-gray-400">{{ t('workplace.access') }}</div>
-                <CountTo
-                  class="text-20px"
-                  :start-val="0"
-                  :end-val="totalSate.access"
-                  :duration="2600"
+                  class="text-right text-20px font-700"
                 />
               </div>
             </div>
-          </el-col>
-        </el-row>
-      </el-skeleton>
-    </el-card>
-  </div>
-
-  <el-row class="mt-8px" :gutter="8" justify="space-between">
-    <el-col :xl="16" :lg="16" :md="24" :sm="24" :xs="24" class="mb-8px">
-      <el-card shadow="never">
-        <template #header>
-          <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.project') }}</span>
-            <el-link
-              type="primary"
-              :underline="false"
-              href="https://github.com/yudaocode"
-              target="_blank"
-            >
-              {{ t('action.more') }}
-            </el-link>
-          </div>
-        </template>
-        <el-skeleton :loading="loading" animated>
-          <el-row>
-            <el-col
-              v-for="(item, index) in projects"
-              :key="`card-${index}`"
-              :xl="8"
-              :lg="8"
-              :md="8"
-              :sm="24"
-              :xs="24"
-            >
-              <el-card 
-                shadow="hover" 
-                class="mr-5px mt-5px cursor-pointer"
-                @click="handleProjectClick(item.message)"
-              >
-                <div class="flex items-center">
-                  <Icon :icon="item.icon" :size="25" class="mr-8px" :style="{ color: item.color }" />
-                  <span class="text-16px">{{ item.name }}</span>
-                </div>
-                <div class="mt-12px text-12px text-gray-400">{{ t(item.message) }}</div>
-                <div class="mt-12px flex justify-between text-12px text-gray-400">
-                  <span>{{ item.personal }}</span>
-                  <span>{{ formatTime(item.time, 'yyyy-MM-dd') }}</span>
-                </div>
-              </el-card>
-            </el-col>
-          </el-row>
-        </el-skeleton>
-      </el-card>
-
-      <el-card shadow="never" class="mt-8px">
-        <el-skeleton :loading="loading" animated>
-          <el-row :gutter="20" justify="space-between">
-            <el-col :xl="10" :lg="10" :md="24" :sm="24" :xs="24">
-              <el-card shadow="hover" class="mb-8px">
-                <el-skeleton :loading="loading" animated>
-                  <Echart :options="pieOptionsData" :height="280" />
-                </el-skeleton>
-              </el-card>
-            </el-col>
-            <el-col :xl="14" :lg="14" :md="24" :sm="24" :xs="24">
-              <el-card shadow="hover" class="mb-8px">
-                <el-skeleton :loading="loading" animated>
-                  <Echart :options="barOptionsData" :height="280" />
-                </el-skeleton>
-              </el-card>
-            </el-col>
-          </el-row>
+          </template>
         </el-skeleton>
       </el-card>
     </el-col>
-    <el-col :xl="8" :lg="8" :md="24" :sm="24" :xs="24" class="mb-8px">
-      <el-card shadow="never">
-        <template #header>
-          <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.shortcutOperation') }}</span>
-          </div>
-        </template>
-        <el-skeleton :loading="loading" animated>
-          <el-row>
-            <el-col v-for="item in shortcut" :key="`team-${item.name}`" :span="8" class="mb-8px">
-              <div class="flex items-center">
-                <Icon :icon="item.icon" class="mr-8px" :style="{ color: item.color }" />
-                <el-link type="default" :underline="false" @click="handleShortcutClick(item.url)">
-                  {{ item.name }}
-                </el-link>
-              </div>
-            </el-col>
-          </el-row>
-        </el-skeleton>
-      </el-card>
-      <el-card shadow="never" class="mt-8px">
-        <template #header>
-          <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.notice') }}</span>
-            <el-link type="primary" :underline="false">{{ t('action.more') }}</el-link>
-          </div>
-        </template>
-        <el-skeleton :loading="loading" animated>
-          <div v-for="(item, index) in notice" :key="`dynamics-${index}`">
-            <div class="flex items-center">
-              <el-avatar :src="avatar" :size="35" class="mr-16px">
-                <img src="@/assets/imgs/avatar.gif" alt="" />
-              </el-avatar>
+
+    <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
+      <el-card class="mb-20px" shadow="hover">
+        <el-skeleton :loading="loading" :rows="2" animated>
+          <template #default>
+            <div :class="`${prefixCls}__item flex justify-between`">
               <div>
-                <div class="text-14px">
-                  <Highlight :keys="item.keys.map((v) => t(v))">
-                    {{ item.type }} : {{ item.title }}
-                  </Highlight>
+                <div
+                  :class="`${prefixCls}__item--icon ${prefixCls}__item--message p-16px inline-block rounded-6px`"
+                >
+                  <Icon :size="40" icon="svg-icon:message" />
                 </div>
-                <div class="mt-16px text-12px text-gray-400">
-                  {{ formatTime(item.date, 'yyyy-MM-dd') }}
+              </div>
+              <div class="flex flex-col justify-between">
+                <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
+                  >{{ t('analysis.unreadInformation') }}
                 </div>
+                <CountTo
+                  :duration="2600"
+                  :end-val="81212"
+                  :start-val="0"
+                  class="text-right text-20px font-700"
+                />
               </div>
             </div>
-            <el-divider />
-          </div>
+          </template>
+        </el-skeleton>
+      </el-card>
+    </el-col>
+
+    <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
+      <el-card class="mb-20px" shadow="hover">
+        <el-skeleton :loading="loading" :rows="2" animated>
+          <template #default>
+            <div :class="`${prefixCls}__item flex justify-between`">
+              <div>
+                <div
+                  :class="`${prefixCls}__item--icon ${prefixCls}__item--money p-16px inline-block rounded-6px`"
+                >
+                  <Icon :size="40" icon="svg-icon:money" />
+                </div>
+              </div>
+              <div class="flex flex-col justify-between">
+                <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
+                  >{{ t('analysis.transactionAmount') }}
+                </div>
+                <CountTo
+                  :duration="2600"
+                  :end-val="9280"
+                  :start-val="0"
+                  class="text-right text-20px font-700"
+                />
+              </div>
+            </div>
+          </template>
+        </el-skeleton>
+      </el-card>
+    </el-col>
+
+    <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
+      <el-card class="mb-20px" shadow="hover">
+        <el-skeleton :loading="loading" :rows="2" animated>
+          <template #default>
+            <div :class="`${prefixCls}__item flex justify-between`">
+              <div>
+                <div
+                  :class="`${prefixCls}__item--icon ${prefixCls}__item--shopping p-16px inline-block rounded-6px`"
+                >
+                  <Icon :size="40" icon="svg-icon:shopping" />
+                </div>
+              </div>
+              <div class="flex flex-col justify-between">
+                <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
+                  >{{ t('analysis.totalShopping') }}
+                </div>
+                <CountTo
+                  :duration="2600"
+                  :end-val="13600"
+                  :start-val="0"
+                  class="text-right text-20px font-700"
+                />
+              </div>
+            </div>
+          </template>
+        </el-skeleton>
+      </el-card>
+    </el-col>
+  </el-row>
+  <el-row :gutter="20" justify="space-between">
+    <el-col :lg="10" :md="24" :sm="24" :xl="10" :xs="24">
+      <el-card class="mb-20px" shadow="hover">
+        <el-skeleton :loading="loading" animated>
+          <Echart :height="300" :options="pieOptionsData" />
+        </el-skeleton>
+      </el-card>
+    </el-col>
+    <el-col :lg="14" :md="24" :sm="24" :xl="14" :xs="24">
+      <el-card class="mb-20px" shadow="hover">
+        <el-skeleton :loading="loading" animated>
+          <Echart :height="300" :options="barOptionsData" />
+        </el-skeleton>
+      </el-card>
+    </el-col>
+    <el-col :span="24">
+      <el-card class="mb-20px" shadow="hover">
+        <el-skeleton :loading="loading" :rows="4" animated>
+          <Echart :height="350" :options="lineOptionsData" />
         </el-skeleton>
       </el-card>
     </el-col>
@@ -178,171 +143,34 @@
 <script lang="ts" setup>
 import { set } from 'lodash-es'
 import { EChartsOption } from 'echarts'
-import { formatTime } from '@/utils'
 
-import { useUserStore } from '@/store/modules/user'
-import { useWatermark } from '@/hooks/web/useWatermark'
-import type { WorkplaceTotal, Project, Notice, Shortcut } from './types'
-import { pieOptions, barOptions } from './echarts-data'
-import { useRouter } from 'vue-router'
+import { useDesign } from '@/hooks/web/useDesign'
+import type { AnalysisTotalTypes } from './types'
+import { barOptions, lineOptions, pieOptions } from './echarts-data'
 
-defineOptions({ name: 'Home' })
+defineOptions({ name: 'Home2' })
 
 const { t } = useI18n()
-const router = useRouter()
-const userStore = useUserStore()
-const { setWatermark } = useWatermark()
 const loading = ref(true)
-const avatar = userStore.getUser.avatar
-const username = userStore.getUser.nickname
+const { getPrefixCls } = useDesign()
+const prefixCls = getPrefixCls('panel')
 const pieOptionsData = reactive<EChartsOption>(pieOptions) as EChartsOption
-// 获取统计数
-let totalSate = reactive<WorkplaceTotal>({
-  project: 0,
-  access: 0,
-  todo: 0
+
+let totalState = reactive<AnalysisTotalTypes>({
+  users: 0,
+  messages: 0,
+  moneys: 0,
+  shoppings: 0
 })
 
 const getCount = async () => {
   const data = {
-    project: 40,
-    access: 2340,
-    todo: 10
+    users: 102400,
+    messages: 81212,
+    moneys: 9280,
+    shoppings: 13600
   }
-  totalSate = Object.assign(totalSate, data)
-}
-
-// 获取项目数
-let projects = reactive<Project[]>([])
-const getProject = async () => {
-  const data = [
-    {
-      name: 'ruoyi-vue-pro',
-      icon: 'simple-icons:springboot',
-      message: 'github.com/YunaiV/ruoyi-vue-pro',
-      personal: 'Spring Boot 单体架构',
-      time: new Date('2025-01-02'),
-      color: '#6DB33F'
-    },
-    {
-      name: 'yudao-ui-admin-vue3',
-      icon: 'ep:element-plus',
-      message: 'github.com/yudaocode/yudao-ui-admin-vue3',
-      personal: 'Vue3 + element-plus 管理后台',
-      time: new Date('2025-02-03'),
-      color: '#409EFF'
-    },
-    {
-      name: 'yudao-ui-mall-uniapp',
-      icon: 'icon-park-outline:mall-bag',
-      message: 'github.com/yudaocode/yudao-ui-mall-uniapp',
-      personal: 'Vue3 + uniapp 商城手机端',
-      time: new Date('2025-03-04'),
-      color: '#ff4d4f'
-    },
-    {
-      name: 'yudao-cloud',
-      icon: 'material-symbols:cloud-outline',
-      message: 'github.com/YunaiV/yudao-cloud',
-      personal: 'Spring Cloud 微服务架构',
-      time: new Date('2025-04-05'),
-      color: '#1890ff'
-    },
-    {
-      name: 'yudao-ui-admin-vben',
-      icon: 'devicon:antdesign',
-      message: 'github.com/yudaocode/yudao-ui-admin-vben',
-      personal: 'Vue3 + vben5(antd) 管理后台',
-      time: new Date('2025-05-06'),
-      color: '#e18525'
-    },
-    {
-      name: 'yudao-ui-admin-uniapp',
-      icon: 'ant-design:mobile',
-      message: 'github.com/yudaocode/yudao-ui-admin-uniapp',
-      personal: 'Vue3 + uniapp 管理手机端',
-      time: new Date('2025-06-01'),
-      color: '#2979ff'
-    }
-  ]
-  projects = Object.assign(projects, data)
-}
-
-// 获取通知公告
-let notice = reactive<Notice[]>([])
-const getNotice = async () => {
-  const data = [
-    {
-      title: '系统支持 JDK 8/17/21，Vue 2/3',
-      type: '技术兼容性',
-      keys: ['JDK', 'Vue'],
-      date: new Date()
-    },
-    {
-      title: '后端提供 Spring Boot 2.7/3.2 + Cloud 双架构',
-      type: '架构灵活性',
-      keys: ['Boot', 'Cloud'],
-      date: new Date()
-    },
-    {
-      title: '全部开源，个人与企业可 100% 直接使用，无需授权',
-      type: '开源免授权',
-      keys: ['无需授权'],
-      date: new Date()
-    },
-    {
-      title: '国内使用最广泛的快速开发平台，远超 10w+ 企业使用',
-      type: '广泛企业认可',
-      keys: ['最广泛', '10w+'],
-      date: new Date()
-    }
-  ]
-  notice = Object.assign(notice, data)
-}
-
-// 获取快捷入口
-let shortcut = reactive<Shortcut[]>([])
-
-const getShortcut = async () => {
-  const data = [
-    {
-      name: '首页',
-      icon: 'ion:home-outline',
-      url: '/',
-      color: '#1fdaca'
-    },
-    {
-      name: '商城中心',
-      icon: 'ep:shop',
-      url: '/mall/home',
-      color: '#ff6b6b'
-    },
-    {
-      name: 'AI 大模型',
-      icon: 'tabler:ai',
-      url: '/ai/chat',
-      color: '#7c3aed'
-    },
-    {
-      name: 'ERP 系统',
-      icon: 'simple-icons:erpnext',
-      url: '/erp/home',
-      color: '#3fb27f'
-    },
-    {
-      name: 'CRM 系统',
-      icon: 'simple-icons:civicrm',
-      url: '/crm/backlog',
-      color: '#4daf1bc9'
-    },
-    {
-      name: 'IoT 物联网',
-      icon: 'fa-solid:hdd',
-      url: '/iot/home',
-      color: '#1a73e8'
-    }
-  ]
-  shortcut = Object.assign(shortcut, data)
+  totalState = Object.assign(totalState, data)
 }
 
 // 用户来源
@@ -359,12 +187,7 @@ const getUserAccessSource = async () => {
     'legend.data',
     data.map((v) => t(v.name))
   )
-  pieOptionsData!.series![0].data = data.map((v) => {
-    return {
-      name: t(v.name),
-      value: v.value
-    }
-  })
+  set(pieOptionsData, 'series.data', data)
 }
 const barOptionsData = reactive<EChartsOption>(barOptions) as EChartsOption
 
@@ -393,25 +216,104 @@ const getWeeklyUserActivity = async () => {
   ])
 }
 
-const getAllApi = async () => {
-  await Promise.all([
-    getCount(),
-    getProject(),
-    getNotice(),
-    getShortcut(),
-    getUserAccessSource(),
-    getWeeklyUserActivity()
+const lineOptionsData = reactive<EChartsOption>(lineOptions) as EChartsOption
+
+// 每月销售总额
+const getMonthlySales = async () => {
+  const data = [
+    { estimate: 100, actual: 120, name: 'analysis.january' },
+    { estimate: 120, actual: 82, name: 'analysis.february' },
+    { estimate: 161, actual: 91, name: 'analysis.march' },
+    { estimate: 134, actual: 154, name: 'analysis.april' },
+    { estimate: 105, actual: 162, name: 'analysis.may' },
+    { estimate: 160, actual: 140, name: 'analysis.june' },
+    { estimate: 165, actual: 145, name: 'analysis.july' },
+    { estimate: 114, actual: 250, name: 'analysis.august' },
+    { estimate: 163, actual: 134, name: 'analysis.september' },
+    { estimate: 185, actual: 56, name: 'analysis.october' },
+    { estimate: 118, actual: 99, name: 'analysis.november' },
+    { estimate: 123, actual: 123, name: 'analysis.december' }
+  ]
+  set(
+    lineOptionsData,
+    'xAxis.data',
+    data.map((v) => t(v.name))
+  )
+  set(lineOptionsData, 'series', [
+    {
+      name: t('analysis.estimate'),
+      smooth: true,
+      type: 'line',
+      data: data.map((v) => v.estimate),
+      animationDuration: 2800,
+      animationEasing: 'cubicInOut'
+    },
+    {
+      name: t('analysis.actual'),
+      smooth: true,
+      type: 'line',
+      itemStyle: {},
+      data: data.map((v) => v.actual),
+      animationDuration: 2800,
+      animationEasing: 'quadraticOut'
+    }
   ])
+}
+
+const getAllApi = async () => {
+  await Promise.all([getCount(), getUserAccessSource(), getWeeklyUserActivity(), getMonthlySales()])
   loading.value = false
-}
-
-const handleProjectClick = (message: string) => {
-  window.open(`https://${message}`, '_blank')
-}
-
-const handleShortcutClick = (url: string) => {
-  router.push(url)
 }
 
 getAllApi()
 </script>
+
+<style lang="scss" scoped>
+$prefix-cls: #{$namespace}-panel;
+
+.#{$prefix-cls} {
+  &__item {
+    &--peoples {
+      color: #40c9c6;
+    }
+
+    &--message {
+      color: #36a3f7;
+    }
+
+    &--money {
+      color: #f4516c;
+    }
+
+    &--shopping {
+      color: #34bfa3;
+    }
+
+    &:hover {
+      :deep(.#{$namespace}-icon) {
+        color: #fff !important;
+      }
+
+      .#{$prefix-cls}__item--icon {
+        transition: all 0.38s ease-out;
+      }
+
+      .#{$prefix-cls}__item--peoples {
+        background: #40c9c6;
+      }
+
+      .#{$prefix-cls}__item--message {
+        background: #36a3f7;
+      }
+
+      .#{$prefix-cls}__item--money {
+        background: #f4516c;
+      }
+
+      .#{$prefix-cls}__item--shopping {
+        background: #34bfa3;
+      }
+    }
+  }
+}
+</style>
