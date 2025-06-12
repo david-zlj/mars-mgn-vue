@@ -40,6 +40,11 @@ export const useI18n = (
 
   const tFn: I18nGlobalTranslation = (key: string, ...arg: any[]) => {
     if (!key) return ''
+
+    // 新增：检测URL格式键名并直接返回
+    const isUrl = /^(https?:\/\/|www\.|\w+\.(com|org|net|io|dev)\/)/.test(key)
+    if (isUrl) return key
+
     if (!key.includes('.') && !namespace) return key
     //@ts-ignore
     return t(getKey(namespace, key), ...(arg as I18nTranslationRestParameters))

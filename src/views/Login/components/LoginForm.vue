@@ -94,6 +94,7 @@
             </el-col> -->
             <el-col>
               <XButton
+                v-if="isRegisterEnabled"
                 :title="t('login.btnRegister')"
                 class="w-[100%]"
                 @click="setLoginState(LoginStateEnum.REGISTER)"
@@ -132,6 +133,8 @@ const redirect = ref<string>('')
 const loginLoading = ref(false)
 const captchaRef = ref()
 const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
+// 是否显示注册
+const isRegisterEnabled = computed(() => import.meta.env.VITE_APP_REGISTER_ENABLE === 'true')
 
 const LoginRules = {
   username: [
