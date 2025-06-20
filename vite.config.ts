@@ -50,7 +50,9 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
             }
         },
         resolve: {
+            // 引入文件后缀，可以不写文件后缀名
             extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.scss', '.css'],
+            // 别名设置
             alias: [
                 {
                     find: 'vue-i18n',

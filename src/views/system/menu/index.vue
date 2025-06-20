@@ -107,7 +107,7 @@ const columns = [
     key: 'name',
     title: '菜单名称',
     dataKey: 'name',
-    width: 250,
+    width: 200,
     fixed: TableV2FixedDir.LEFT
   },
   {
@@ -128,13 +128,13 @@ const columns = [
     key: 'permission',
     title: '权限标识',
     dataKey: 'permission',
-    width: 300
+    width: 200
   },
   {
     key: 'component',
     title: '组件路径',
     dataKey: 'component',
-    width: 500
+    width: 200
   },
   {
     key: 'componentName',
