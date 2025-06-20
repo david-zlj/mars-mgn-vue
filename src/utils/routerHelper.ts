@@ -101,7 +101,7 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
     if (!route.children && route.parentId == 0 && route.component) {
       data.component = Layout
       data.meta = {
-        hidden: meta.hidden,
+        hidden: meta.hidden
       }
       data.name = toCamelCase(route.path, true) + 'Parent'
       data.redirect = ''
@@ -135,6 +135,8 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
           },
           children: [data]
         } as AppRouteRecordRaw
+        res.push(data as AppRouteRecordRaw)
+        continue
         // 菜单
       } else {
         // 对后端传component组件路径和不传做兼容（如果后端传component组件路径，那么path可以随便写，如果不传，component组件路径会根path保持一致）
