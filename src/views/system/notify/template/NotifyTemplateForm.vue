@@ -55,7 +55,7 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as NotifyTemplateApi from '@/api/system/notify/template'
 import { CommonStatusEnum } from '@/utils/constants'
 const message = useMessage() // 消息弹窗
-
+const { t } = useI18n() // 国际化
 const dialogVisible = ref(false) // 弹窗的是否展示
 const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
@@ -84,7 +84,7 @@ const formRef = ref() // 表单 Ref
 /** 打开弹窗 */
 const open = async (type: string, id?: number) => {
   dialogVisible.value = true
-  dialogTitle.value = type
+  dialogTitle.value = t('action.' + type)
   formType.value = type
   resetForm()
   // 修改时，设置数据
