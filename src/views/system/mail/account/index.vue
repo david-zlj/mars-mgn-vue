@@ -29,6 +29,7 @@
       }"
       v-model:pageSize="tableObject.pageSize"
       v-model:currentPage="tableObject.currentPage"
+      :showOverflowTooltip="false"
     >
       <template #action="{ row }">
         <el-button
