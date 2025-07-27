@@ -1,6 +1,4 @@
 <template>
-  <doc-alert title="WebSocket 实时通信" url="https://doc.iocoder.cn/websocket/" />
-
   <div class="flex">
     <!-- 左侧：建立连接、发送消息 -->
     <el-card :gutter="12" class="w-1/2" shadow="always">
@@ -32,7 +30,7 @@
         placeholder="请输入你要发送的消息"
         type="textarea"
       />
-      <el-select v-model="sendUserId" class="mt-4" placeholder="请选择发送人">
+      <el-select v-model="sendUserId" class="mt-4" placeholder="请选择接收人">
         <el-option key="" label="所有人" value="" />
         <el-option
           v-for="user in userList"
@@ -45,6 +43,7 @@
         发送
       </el-button>
     </el-card>
+
     <!-- 右侧：消息记录 -->
     <el-card :gutter="12" class="w-1/2" shadow="always">
       <template #header>
