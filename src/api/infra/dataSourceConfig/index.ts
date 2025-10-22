@@ -11,12 +11,12 @@ export interface DataSourceConfigVO {
 
 // 新增数据源配置
 export const createDataSourceConfig = (data: DataSourceConfigVO) => {
-  return request.post({ url: '/infra/data-source-config/create', data })
+  return request.post({ url: '/infra/data-source-config', data })
 }
 
 // 修改数据源配置
 export const updateDataSourceConfig = (data: DataSourceConfigVO) => {
-  return request.put({ url: '/infra/data-source-config/update', data })
+  return request.put({ url: `/infra/data-source-config/${data.id}`, data })
 }
 
 // 删除数据源配置
@@ -31,5 +31,5 @@ export const getDataSourceConfig = (id: number) => {
 
 // 查询数据源配置列表
 export const getDataSourceConfigList = () => {
-  return request.get({ url: '/infra/data-source-config/list' })
+  return request.get({ url: '/infra/data-source-config' })
 }

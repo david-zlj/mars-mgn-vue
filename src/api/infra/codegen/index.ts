@@ -63,12 +63,14 @@ export const getCodegenTableList = (dataSourceConfigId: number) => {
 
 // 查询列表代码生成表定义
 export const getCodegenTablePage = (params: PageParam) => {
-  return request.get({ url: '/infra/codegen/table/page', params })
+  return request.get({ url: '/infra/codegen', params })
+  // return request.get({ url: '/infra/codegen/table/page', params })
 }
 
 // 查询详情代码生成表定义
 export const getCodegenTable = (id: number) => {
-  return request.get({ url: '/infra/codegen/detail?tableId=' + id })
+  return request.get({ url: `/infra/codegen/${id}` })
+  // return request.get({ url: '/infra/codegen/detail?tableId=' + id })
 }
 
 // 修改代码生成表定义
